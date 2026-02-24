@@ -1,5 +1,5 @@
 import { RouterProvider } from 'react-router'
-import './App.css'
+import './index.css'
 import { router } from './app/router/Router'
 
 function App() {
@@ -8,7 +8,7 @@ function App() {
     <>
       <RouterProvider router={router} />
     </>
-  )
+  ) 
 }
 
 export default App

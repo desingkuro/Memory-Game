@@ -1,8 +1,9 @@
 import { Outlet } from "react-router";
+import ContainerLayout from "../../shared/components/ContainerLayout";
 
 export default function MainLayout(){
     return(
-        <div className="w-full h-full">
+        <ContainerLayout>
             <header>
                 <h1>Rick and Morty Memory</h1>
             </header>
@@ -10,6 +11,6 @@ export default function MainLayout(){
             <footer>
                 <p>© 2026 Rick and Morty Memory. All rights reserved.</p>
             </footer>
-        </div>
+        </ContainerLayout>
     )
 }

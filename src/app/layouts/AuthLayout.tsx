@@ -1,9 +1,10 @@
 import { Outlet } from "react-router";
+import ContainerLayout from "../../shared/components/ContainerLayout";
 
 export default function AuthLayout(){
     return(
-        <div className="h-full w-full">
+        <ContainerLayout>
             <Outlet/>
-        </div>
+        </ContainerLayout>
     )
 }
