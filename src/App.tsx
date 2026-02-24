@@ -1,10 +1,12 @@
+import { RouterProvider } from 'react-router'
 import './App.css'
+import { router } from './app/router/Router'
 
 function App() {
 
   return (
     <>
-      <h1>Rick and Morty Memory</h1>
+      <RouterProvider router={router} />
     </>
   )
 }
