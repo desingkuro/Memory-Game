@@ -2,27 +2,18 @@ import HeaderHome from "./components/HeaderHome";
 import FooterHome from "./components/FooterHome";
 import type { Character, CharactersResponse } from "../../shared/types/apiInterface";
 import Card from "./components/Card";
-import { useEffect, useState } from "react";
+import './styles/Home.css';
+import useGame from "./hooks/useGame";
 
 export default function Home() {
 
-    const [characters,setCharacters] = useState<Character[]>([]);
-
-    useEffect(()=>{
-        setCharacters(cards.results.map((e)=>{return {...e,state:false}}));
-    },[])
-
-    const handleCardClick = (index:number) => {
-        const newCharacters = [...characters];
-        newCharacters[index].state = !newCharacters[index].state;
-        setCharacters(newCharacters);
-    }
+    const {characters,handleCardClick} = useGame();
 
     return (
         <div className="w-full h-full flex justify-center items-center  !p-2 rounded-2xl">
-            <section className="w-[80%] bg-secondary rounded-2xl !py-4 !px-[50px] h-full flex flex-col justify-center items-center">
+            <section className="w-[70%] max-w-[1024px] bg-secondary rounded-2xl !py-4 !px-[50px] h-full flex flex-col justify-center items-center gap-2">
                 <HeaderHome state="game" successes={0} turns={0} />
-                <main className="w-[100%] h-[100dvh] grid grid-cols-4 gap-8">
+                <main className="w-[100%] h-[850px] grid grid-cols-4 gap-8 home-main-scroll">
                     {
                         characters.map((character:Character, index:number)=>{
                             return(

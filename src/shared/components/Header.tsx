@@ -7,7 +7,7 @@ interface HeaderProp{
 export default function Header({tittle}:HeaderProp){
     return(
         <header 
-            className="w-full h-auto !py-2 !px-4 flex flex-col justify-center items-center gap-2">
+            className="w-full h-auto !py-2 !px-4 flex flex-col justify-center items-center gap-2 !mb-2">
             <picture className="w-[350px] h-[160px] flex justify-center items-center">
                 <img src={logotipo} alt="logotipo" className="h-full w-full object-fill" />
             </picture>

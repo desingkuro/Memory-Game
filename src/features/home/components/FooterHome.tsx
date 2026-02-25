@@ -1,7 +1,13 @@
+import Button from "../../../shared/components/button";
+
 export default function FooterHome(){
     return(
-        <footer className="w-full h-[200px] flex items-center justify-center ">
-            <h1>Footer Home</h1>
+        <footer className="w-full h-[140px] flex items-center justify-center ">
+            <div className=" w-[240px] ">
+                <Button type="button" size="lg" variant="primary" tone={100}>
+                    Jugar
+                </Button>
+            </div>
         </footer>
     );
 }
