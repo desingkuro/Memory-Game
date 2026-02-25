@@ -9,6 +9,7 @@ export default {
         quaternary: "var(--color-quaternary)",        
         quinary: "var(--color-quinary)",            
         senary: "var(--color-senary)",          
+        'blue-light': "var(--color-blue-light)",
       },
       fontFamily: {
         sans: ["Inter", "sans-serif"],

@@ -11,6 +11,9 @@
   --color-quinary: #465669;
   --color-senary: #D8E054;
 }
+:root{
+    --color-blue-light:#A2F2F9;
+}
 
 * {
   margin: 0;
