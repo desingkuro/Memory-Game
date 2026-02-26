@@ -6,7 +6,7 @@ interface HeaderHomeProps {
 }
 
 export default function HeaderHome({ state, successes = 0, turns = 0 }: HeaderHomeProps) {
-    const styleText = 'font-semibold text-lg';
+    const styleText = 'font-semibold text-2xl';
     return (
         <header className="w-full flex justify-between items-center !py-2 h-[60px] ">
             {

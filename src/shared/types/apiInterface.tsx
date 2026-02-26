@@ -27,9 +27,21 @@ export interface Character {
     url: string;
     created: string;
     state?:boolean;
+    uniqueId?:string;
 }
 
 export interface CharactersResponse {
     info: ApiInfo;
     results: Character[];
+}
+
+export type TypeApi = 'game' | 'auth';
+
+export interface GetArguments {
+    path: string;
+    type: TypeApi;
+}
+
+export interface PostArguments extends GetArguments {
+    data: object;
 }

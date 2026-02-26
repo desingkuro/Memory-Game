@@ -5,7 +5,14 @@ export interface GameProp {
     turns:number,
     state:stateGame,
     characters:Character[],
-    handleCardClick:(index:number)=>void
+    resetGame:()=>void,
+    handleState:(state:stateGame)=>void,
+    handlePlay:()=>void,
+    viewModal:boolean,
+    setViewModal:(viewModal:boolean)=>void,
+    seconds:number,
+    isRunning:boolean,
+    handleGame:(character:Character,index:number)=>void
 }
 
-export type stateGame = "game" | "characters";
+export type stateGame = "game" | "characters" | "win";

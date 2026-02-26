@@ -1,19 +1,21 @@
 import axios from "axios";
+import type { GetArguments, PostArguments } from "../types/apiInterface";
 
-const api_url = import.meta.env.VITE_API_URL_CHARACTERS || "http://localhost:3000";
+const api_url = {
+    auth: import.meta.env.VITE_API_URL_GAME || "http://localhost:3000",
+    game: import.meta.env.VITE_API_URL_CHARACTERS || "http://localhost:3000"
+}
 
 const interceptor = () => {
     axios.interceptors.request.use((config) => {
-        //config.headers["ngrok-skip-browser-warning"] = "true";
         return config;
     });
 }
-
 interceptor();
 
-export async function GetData(path: string): Promise<any> {
+export async function GetData({path,type}:GetArguments): Promise<any> {
     try {
-        const response = await axios.get(`${api_url}/${path}`);
+        const response = await axios.get(`${api_url[type]}/${path}`);
         return response.data;
     } catch (error) {
         console.error(error);
@@ -21,9 +23,9 @@ export async function GetData(path: string): Promise<any> {
     }
 }
 
-export async function PostData(path: string, data: object): Promise<any> {
+export async function PostData({path,type,data}:PostArguments): Promise<any> {
     try {
-        const response = await axios.post(`${api_url}/${path}`, data);
+        const response = await axios.post(`${api_url[type]}/${path}`, data);
         return response.data;
     } catch (error) {
         console.error(error);

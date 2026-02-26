@@ -4,15 +4,15 @@
 @tailwind utilities;
 
 @theme {
-  --color-primary: #1C1D3B;
-  --color-secondary: #FFFAC2;
-  --color-tertiary: #1A7A83;
-  --color-quaternary: #E6EC59;
+  --color-primary: #1c1d3b;
+  --color-secondary: #fffac2;
+  --color-tertiary: #1a7a83;
+  --color-quaternary: #e6ec59;
   --color-quinary: #465669;
-  --color-senary: #D8E054;
+  --color-senary: #d8e054;
 }
-:root{
-    --color-blue-light:#A2F2F9;
+:root {
+  --color-blue-light: #a2f2f9;
 }
 
 * {
@@ -34,3 +34,32 @@ body {
   min-height: 100vh;
 }
 
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes slideOut {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-30px) scale(0.9);
+  }
+}
+
+.animate-slideIn {
+  animation: slideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.animate-slideOut {
+  animation: slideOut 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
