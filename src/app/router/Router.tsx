@@ -1,28 +1,22 @@
 import { createBrowserRouter } from "react-router"
 import MainLayout from "../layouts/MainLayout"
-import AuthLayout from "../layouts/AuthLayout"
 import Login from "../../features/auth/Login"
 import Home from "../../features/home/Home"
+import ProtectedRoute from "../guard/Guard"
 
 export const router = createBrowserRouter([
     {
         path: "/",
-        element: <MainLayout/>,
-        children:[
+        element: <MainLayout />,
+        children: [
             {
-                path:"/",
-                element:<Home/>
+                path: "/",
+                element: <ProtectedRoute><Home /></ProtectedRoute>
             }
         ]
     },
     {
-        path: "/auth",
-        element: <AuthLayout/>,
-        children:[
-            {
-                path: "login",
-                element: <Login/>
-            }
-        ]
+        path: "/login",
+        element: <Login />,
     }
 ])

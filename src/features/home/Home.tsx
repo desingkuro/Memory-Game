@@ -2,11 +2,11 @@ import HeaderHome from "./components/HeaderHome";
 import FooterHome from "./components/FooterHome";
 import type { Character } from "../../shared/types/apiInterface";
 import Card from "./components/Card";
-import './styles/Home.css';
 import useGame from "./hooks/useGame";
 import RickAndMortyModal from "./components/RickAndMortyModal";
 import Toast from "../../shared/components/Toast";
 import GameWinSection from "./components/GameWinSection";
+import './styles/Home.css';
 
 export default function Home() {
 
