@@ -6,7 +6,14 @@ import { useCountdown } from "./useCountDown";
 
 export default function useGame(): GameProp {
 
-    const { characters, handleCardClick, initShuffle, deletCharactersForIndex, toggleCharactersById } = useCharacters();
+    const { 
+        characters, 
+        handleCardClick, 
+        initShuffle, 
+        deletCharactersForIndex, 
+        toggleCharactersById, 
+        changeStateCharacters 
+    } = useCharacters();
     const { countDown, seconds, isRunning } = useCountdown({ initialSeconds: 3 });
 
     const [successes, setSuccesses] = useState<number>(0);
@@ -14,6 +21,7 @@ export default function useGame(): GameProp {
     const [state, setState] = useState<stateGame>("characters");
     const [selectedCards, setSelectedCards] = useState<Character | null>(null);
     const [viewModal, setViewModal] = useState<boolean>(true);
+    const [lengthCharacters, setLengthCharacters] = useState<number>(0);
 
     const handleState = (state: stateGame) => {
         setState(state);
@@ -21,16 +29,17 @@ export default function useGame(): GameProp {
     }
 
     const incrementTurns = () => {
-        setTurns(turns + 1);
+        setTurns(prev => prev + 1);
     }
 
     const incrementSuccesses = () => {
-        setSuccesses(successes + 1);
+        setSuccesses(prev => prev + 1);
     }
 
     const handlePlay = () => {
         handleState("game");
         initShuffle();
+        setLengthCharacters(characters.length);
         countDown();
     }
 
@@ -38,6 +47,10 @@ export default function useGame(): GameProp {
         setSuccesses(0);
         setTurns(0);
         setState("characters");
+        setSelectedCards(null);
+        setViewModal(true);
+        initShuffle();
+        changeStateCharacters();
     }
 
     const handleGame = (character: Character, index: number) => {
@@ -68,10 +81,6 @@ export default function useGame(): GameProp {
 
         if (isMatch) {
             handleMatchSuccess();
-            if (successes === characters.length / 2) {
-                console.log("ganaste");
-                setState("win");
-            }
         } else {
             handleMatchFail(character);
         }
@@ -83,6 +92,9 @@ export default function useGame(): GameProp {
             deletCharactersForIndex(selectedCards.id);
             incrementSuccesses();
             setSelectedCards(null);
+            if (successes + 1 === lengthCharacters / 2) {
+                setState("win");
+            }
         }, 1000);
     };
 

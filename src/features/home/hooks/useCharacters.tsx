@@ -31,8 +31,8 @@ export default function useCharacters() {
 
     const buildPairs = (cards: Character[]) => {
         const duplicated = cards.flatMap(card => [
-            { ...card, state: true, uniqueId: getUUID() },
-            { ...card, state: true, uniqueId: getUUID() },
+            { ...card, state: true, uniqueId: getUUID(), delete: false },
+            { ...card, state: true, uniqueId: getUUID(), delete: false },
         ]);
 
         return shuffle(duplicated);
@@ -71,7 +71,10 @@ export default function useCharacters() {
 
 
     const deletCharactersForIndex = (id: number) => {
-        setCharacters(prev => prev.filter((e) => e.id !== id));
+        setCharacters(prev => prev.map((e) => {
+            if (e?.id === id) return { ...e, delete: true };
+            return e;
+        }) as Character[]);
     }
 
     const initShuffle = () => {

@@ -28,6 +28,7 @@ export interface Character {
     created: string;
     state?:boolean;
     uniqueId?:string;
+    delete?:boolean;
 }
 
 export interface CharactersResponse {

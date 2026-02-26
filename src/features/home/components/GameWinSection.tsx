@@ -33,7 +33,6 @@ export default function GameWinSection({
         ${visible ? "animate-scaleIn" : "animate-scaleOut"}
       `}
         >
-            {/* Icono de celebración */}
             <div className="!mb-6 flex justify-center">
                 <div className="relative">
                     <div className="h-24 w-24 rounded-2xl bg-[#00B5CC] !p-4 shadow-lg">
@@ -45,17 +44,14 @@ export default function GameWinSection({
                 </div>
             </div>
 
-            {/* Título */}
             <h2 className="!mb-2 text-center text-3xl font-black text-[#051622]">
                 ¡Felicitaciones!
             </h2>
 
-            {/* Subtítulo con turns */}
             <p className="!mb-8 text-center text-xl font-semibold text-[#00B5CC]">
                 Terminaste el juego con <span className="text-2xl">{turns}</span> turnos
             </p>
 
-            {/* Botones */}
             <div className="flex gap-4 justify-center">
                 <Button
                     onClick={handleRestart}

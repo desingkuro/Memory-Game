@@ -20,20 +20,31 @@ export default function Home() {
         seconds,
         isRunning,
         successes,
+        resetGame,
         turns } = useGame();
+
+    const handleCardClick = (character: Character, index: number) => {
+        state === "game" && handleGame(character, index)
+    }
 
     return (
         <div className="w-full h-full flex justify-center items-center  !p-2 rounded-2xl">
             <section className="w-[70%] min-w-[1024px] bg-secondary rounded-2xl !py-4 !px-[50px] h-full flex flex-col justify-center items-center gap-2">
                 <HeaderHome state={state} successes={successes} turns={turns} />
-                <main className="w-[100%] h-[850px] grid grid-cols-4 grid-rows-3 gap-8 home-main-scroll">
+                <main className={"w-[100%] h-[850px] gap-8 home-main-scroll" + (state === "win" ? " flex items-center justify-center h-[500px] " : " grid grid-cols-4 grid-rows-3")}>
                     {
-                        characters.map((character: Character, index: number) => {
+                        state !== "win" && characters.map((character: Character, index: number) => {
                             return (
-                                <Card key={character.uniqueId} onClick={() => {state === "game" && handleGame(character, index) }} character={character} />
+                                <Card key={character.uniqueId} onClick={() => { handleCardClick(character, index) }} character={character} />
                             )
                         })
                     }
+                    {state === "win" && <GameWinSection
+                        visible={state === "win"}
+                        turns={turns}
+                        onRestart={handlePlay}
+                        onHome={resetGame}
+                    />}
                 </main>
                 {isRunning && <Toast
                     count={seconds}
@@ -42,12 +53,6 @@ export default function Home() {
                     message="Segundos"
                 />}
 
-                <GameWinSection
-                    visible={state === "win"}
-                    turns={turns}
-                    onRestart={()=>{}}
-                    onHome={()=>{}}
-                />
 
                 <RickAndMortyModal
                     open={viewModal}
