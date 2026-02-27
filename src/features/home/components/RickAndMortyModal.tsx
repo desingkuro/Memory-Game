@@ -14,9 +14,11 @@ export default function RickAndMortyModal({
     if (!open) return null;
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+        <div className="fixed inset-0 z-50 h-full w-full flex items-center justify-center bg-black/40">
+
             {/* Contenedor del modal */}
-            <div className="w-full max-w-md rounded-2xl bg-[#FFFDF5] !px-10 !py-8 shadow-2xl">
+            <div className=" xl:max-w-md w-[340px] sm:w-[440px] rounded-2xl bg-[#FFFDF5] !px-10 !py-8 shadow-2xl">
+
                 {/* Icono / ilustración */}
                 <div className="!mb-4 flex justify-center">
                     <div className="flex h-24 w-24 items-center justify-center rounded-full bg-[#DDFCFB]">

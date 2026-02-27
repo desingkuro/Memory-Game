@@ -6,9 +6,9 @@ interface HeaderHomeProps {
 }
 
 export default function HeaderHome({ state, successes = 0, turns = 0 }: HeaderHomeProps) {
-    const styleText = 'font-semibold text-2xl';
+    const styleText = 'font-semibold xl:text-2xl text-xl';
     return (
-        <header className="w-full flex justify-between items-center !py-2 h-[60px] ">
+        <header className="w-full flex justify-between items-center xl:!py-2 !py-4 h-[60px] ">
             {
                 state === 'characters' ?
                     (<p className={styleText} >Personajes</p>)

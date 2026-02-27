@@ -29,7 +29,7 @@ export default function GameWinSection({
     return (
         <section
             className={`
-        w-full max-w-md !mx-auto rounded-2xl bg-gradient-to-br from-[#FFF8B8] to-[#FFF2A8] !p-8 shadow-2xl border-4 border-[#00B5CC]
+        w-[90%] xl:max-w-md !mx-auto rounded-2xl bg-gradient-to-br from-[#FFF8B8] to-[#FFF2A8] !p-8 shadow-2xl border-4 border-[#00B5CC]
         ${visible ? "animate-scaleIn" : "animate-scaleOut"}
       `}
         >
@@ -52,7 +52,7 @@ export default function GameWinSection({
                 Terminaste el juego con <span className="text-2xl">{turns}</span> turnos
             </p>
 
-            <div className="flex gap-4 justify-center">
+            <div className="flex gap-4 xl:flex-row flex-col justify-center">
                 <Button
                     onClick={handleRestart}
                     size="md"

@@ -28,24 +28,38 @@ export default function Home() {
     }
 
     return (
-        <div className="w-full h-full flex justify-center items-center  !p-2 rounded-2xl">
-            <section className="w-[70%] min-w-[1024px] bg-secondary rounded-2xl !py-4 !px-[50px] h-full flex flex-col justify-center items-center gap-2">
+        <div className="w-full h-full flex justify-center items-center !p-2 rounded-2xl">
+            <section className="w-[95%] xl:max-w-[1024px] bg-secondary rounded-2xl !py-4 xl:!px-[50px] !px-2 h-full flex flex-col justify-center items-center gap-2">
                 <HeaderHome state={state} successes={successes} turns={turns} />
-                <main className={"w-[100%] h-[850px] gap-8 home-main-scroll" + (state === "win" ? " flex items-center justify-center h-[500px] " : " grid grid-cols-4 grid-rows-3")}>
-                    {
-                        state !== "win" && characters.map((character: Character, index: number) => {
-                            return (
-                                <Card key={character.uniqueId} onClick={() => { handleCardClick(character, index) }} character={character} />
-                            )
-                        })
+                <main
+                    className={
+                        "w-full min-w-[300px] xl:min-w-[1024px] home-main-scroll grid gap-2 sm:gap-4 " +
+                        (state === "win"
+                            ? "grid-cols-1 place-items-center min-h-[380px]"
+                            : "grid grid-cols-4 grid-rows-2 justify-items-center")
                     }
-                    {state === "win" && <GameWinSection
-                        visible={state === "win"}
-                        turns={turns}
-                        onRestart={handlePlay}
-                        onHome={resetGame}
-                    />}
+                >
+                    {state !== "win" &&
+                        characters.map((character: Character, index: number) => (
+                            <Card
+                                key={character.uniqueId}
+                                onClick={() => handleCardClick(character, index)}
+                                character={character}
+                            />
+                        ))}
+
+                    {state === "win" && (
+                        <GameWinSection
+                            visible={state === "win"}
+                            turns={turns}
+                            onRestart={handlePlay}
+                            onHome={resetGame}
+                        />
+                    )}
                 </main>
+
+
+
                 {isRunning && <Toast
                     count={seconds}
                     visible={isRunning}
@@ -58,7 +72,7 @@ export default function Home() {
                     open={viewModal}
                     onContinue={() => setViewModal(false)}
                 />
-                <FooterHome onClick={handlePlay} stateGame={state} />
+                {state === "characters" && <FooterHome onClick={handlePlay} stateGame={state} />}
             </section>
         </div>
     );

@@ -12,7 +12,9 @@ export interface GameProp {
     setViewModal:(viewModal:boolean)=>void,
     seconds:number,
     isRunning:boolean,
-    handleGame:(character:Character,index:number)=>void
+    handleGame:(character:Character,index:number)=>void,
+    isBlocked:boolean,
+    setIsBlocked:(isBlocked:boolean)=>void
 }
 
 export type stateGame = "game" | "characters" | "win";

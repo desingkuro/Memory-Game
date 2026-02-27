@@ -19,6 +19,9 @@ export default {
         'gradient-accent': 'linear-gradient(135deg, var(--color-tertiary) 0%, var(--color-quaternary) 100%)',
         'gradient-hero': 'linear-gradient(135deg, var(--color-quinary) 0%, var(--color-secondary) 50%, var(--color-primary) 100%)',
       },
+      screens: {
+        'xs': '400px',
+      },
     },
   },
   plugins: [],
