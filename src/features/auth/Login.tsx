@@ -4,9 +4,18 @@ import ContainerLayout from "../../shared/components/ContainerLayout"
 import Input from "./components/Input"
 import useLogin from "./hooks/useLogin"
 import PasswordToggle from "./components/PasswordToggle"
+import Loader from "../../shared/components/Loader"
 
 export default function Login() {
-    const { register, handleSubmit, showPassword, togglePasswordVisibility, errors, onSubmit } = useLogin();
+    const { 
+        register, 
+        handleSubmit, 
+        showPassword, 
+        togglePasswordVisibility, 
+        errors, 
+        onSubmit, 
+        showLoader 
+    } = useLogin();
     return (
         <ContainerLayout>
             <div className="h-dvh w-full flex items-center justify-center bg-primary">
@@ -56,6 +65,7 @@ export default function Login() {
                     </div>
                 </form>
             </div >
+            {showLoader && <Loader />}
         </ContainerLayout >
     )
 }

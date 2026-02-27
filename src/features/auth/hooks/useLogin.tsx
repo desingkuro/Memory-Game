@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { PostData } from "../../../shared/services/Api.services";
 import { useSnackbar } from "notistack";
 import { Alert } from "../../../shared/services/AlertServices";
+import { AuthContext } from "../../../shared/context/AuthContext";
 
 interface LoginFormInputs {
     email: string;
@@ -16,13 +17,11 @@ export default function useLogin() {
     const { enqueueSnackbar } = useSnackbar();
     const navigate = useNavigate();
     const [showLoader, setShowLoader] = useState<boolean>(false);
+    const { setUser } = useContext(AuthContext);
 
     const onSubmit = async (data: LoginFormInputs) => {
         setShowLoader(true);
-        const success = await signIn(data.email, data.password, enqueueSnackbar);
-        if (success) {
-            navigate('/');
-        }
+        await signIn(data.email, data.password, enqueueSnackbar);
         setShowLoader(false);
     };
 
@@ -34,14 +33,17 @@ export default function useLogin() {
         email: string,
         password: string,
         enqueueSnackbar: any
-    ): Promise<boolean> {
+    ) {
         try {
             const data = {
-                email,
-                password: btoa(password)
+                user: email,
+                password: password
             }
-            const response = await PostData({ path: 'login', type: 'auth', data });
-            if (response.code === 200) {
+            const response = await PostData({ path: 'auth/login', type: 'auth', data });
+            if (response.status === 'success') {
+                sessionStorage.setItem('token', response.token);
+                sessionStorage.setItem('user', JSON.stringify(response.user));
+                setUser(response.user);
                 Alert(
                     {
                         text: "Sesión iniciada correctamente",
@@ -49,9 +51,8 @@ export default function useLogin() {
                     },
                     enqueueSnackbar
                 );
-                return true;
+                navigate('/');
             }
-            return false;
         } catch (error: any) {
             Alert(
                 {
@@ -61,9 +62,9 @@ export default function useLogin() {
                 enqueueSnackbar
             );
             console.error("Error signing in:", error.code, error.message);
-            return false;
         }
     }
+
 
     return {
         register,
