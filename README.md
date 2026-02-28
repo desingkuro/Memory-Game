@@ -198,3 +198,4 @@ npm run build
 ```
 
 Esto genera la versión optimizada del proyecto en la carpeta `dist/`.
+# Memory-Game-Rick-and-Morty-Private
