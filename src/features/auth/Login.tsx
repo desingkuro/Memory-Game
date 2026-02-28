@@ -1,4 +1,4 @@
-import logotipo from "../../assets/img/logo.png"
+import logotipo from "../../assets/img/logo.webp"
 import Button from "../../shared/components/button"
 import ContainerLayout from "../../shared/components/ContainerLayout"
 import Input from "./components/Input"
@@ -7,21 +7,21 @@ import PasswordToggle from "./components/PasswordToggle"
 import Loader from "../../shared/components/Loader"
 
 export default function Login() {
-    const { 
-        register, 
-        handleSubmit, 
-        showPassword, 
-        togglePasswordVisibility, 
-        errors, 
-        onSubmit, 
-        showLoader 
+    const {
+        register,
+        handleSubmit,
+        showPassword,
+        togglePasswordVisibility,
+        errors,
+        onSubmit,
+        showLoader
     } = useLogin();
     return (
         <ContainerLayout>
             <div className="h-dvh w-full flex items-center justify-center bg-primary !p-4">
                 <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-[612px] h-[95%] max-h-[657px] bg-secondary rounded-xl flex flex-col items-center justify-center gap-4 overflow-hidden !m-4 sm:!m-8 !p-6 sm:!p-8">
                     <picture className="h-[25%] w-full flex items-center justify-center">
-                        <img src={logotipo} alt="Logotipo" className="object-contain w-[100%] h-[100%]" />
+                        <img fetchPriority="high" src={logotipo} alt="Logotipo" className="object-contain w-[100%] h-[100%]" />
                     </picture>
                     <div className="w-full h-[70%] flex flex-col items-center justify-center gap-2">
                         <Input label="Usuario" type="text" id="username" placeholder="Introduce tu usuario" propInput={

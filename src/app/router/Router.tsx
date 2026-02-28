@@ -1,8 +1,13 @@
 import { createBrowserRouter } from "react-router"
 import MainLayout from "../layouts/MainLayout"
-import Login from "../../features/auth/Login"
-import Home from "../../features/home/Home"
 import ProtectedRoute from "../guard/Guard"
+import React from "react"
+
+/**
+ * Lazy loading components
+ */
+const HomeLazy = React.lazy(() => import("../../features/home/Home"));
+const LoginLazy = React.lazy(() => import("../../features/auth/Login"));
 
 export const router = createBrowserRouter([
     {
@@ -11,12 +16,12 @@ export const router = createBrowserRouter([
         children: [
             {
                 path: "/",
-                element: <ProtectedRoute><Home /></ProtectedRoute>
+                element: <ProtectedRoute><HomeLazy /></ProtectedRoute>
             }
         ]
     },
     {
         path: "/login",
-        element: <Login />,
+        element: <LoginLazy />,
     }
 ])

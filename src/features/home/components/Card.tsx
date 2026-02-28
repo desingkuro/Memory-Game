@@ -29,6 +29,7 @@ export default function Card({ onClick, character }: CardProps) {
                 <div className="absolute inset-0 bg-white rounded-xl backface-hidden flex flex-col justify-center items-center gap-1 !p-1 xs:!p-2 sm:!p-3">
                     <picture className="w-[90%] h-[65%] xl:w-[180px] xl:h-[180px] xs:rounded-2xl rounded-[5px] overflow-hidden xs:!mb-1 sm:!mb-2">
                         <img
+                            fetchPriority="high"
                             src={character?.image}
                             alt={'imagen de ' + character?.name}
                             className="w-full h-full object-cover"
@@ -48,6 +49,7 @@ export default function Card({ onClick, character }: CardProps) {
                 {/* back card */}
                 <div className="absolute inset-0 bg-[#A2F2F9] rounded-xl backface-hidden rotate-y-180 flex items-center justify-center !p-1 xs:!p-2 sm:!p-3">
                     <img
+                        fetchPriority="high"
                         src={backCard}
                         className="w-[65%] h-[55%] object-contain"
                         alt="back card"

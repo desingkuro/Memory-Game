@@ -6,7 +6,7 @@ import Footer from "../../shared/components/Footer";
 export default function MainLayout() {
     return (
         <ContainerLayout>
-            <Header tittle="Juego de memoria" />
+            <Header tittle="Rick and Morty Memory Game" />
             <Outlet />
             <Footer />
         </ContainerLayout>

@@ -88,7 +88,7 @@ Tomando como base el diseño del Figma proporcionado, se incorporaron las siguie
 │   ├── assets
 │   │   ├── img
 │   │   │   ├── backCard.png
-│   │   │   └── logo.png
+│   │   │   └── logo.webp
 │   │   └── react.svg
 │   ├── features
 │   │   ├── auth

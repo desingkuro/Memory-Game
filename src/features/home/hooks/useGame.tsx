@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import type { GameProp, stateGame } from "../types/useGameInterface";
 import useCharacters from "./useCharacters";
 import type { Character } from "../../../shared/types/apiInterface";
@@ -57,27 +57,9 @@ export default function useGame(): GameProp {
         changeStateCharacters();
     }
 
-    const handleGame = (character: Character, index: number) => {
-        if (isBlocked) return;
-
-        if (character.uniqueId === selectedCards?.uniqueId) return;
-
-        if (selectedCards === null) setSelectedCards(character);
-
-        if (selectedCards !== null) {
-            const isMatch = compareCards(selectedCards, character);
-            handleMatch(isMatch, character);
-        };
-
-        handleCardClick(index);
-    }
-
-    const compareCards = (character1: Character, character2: Character): boolean => {
-        if (character1.id === character2.id) {
-            return true;
-        }
-        return false;
-    }
+    const compareCards = useCallback((c1: Character, c2: Character): boolean => {
+        return c1.id === c2.id;
+    }, []);
 
     const handleMatch = (isMatch: boolean, character: Character) => {
         if (selectedCards === null || isBlocked) return;
@@ -90,6 +72,17 @@ export default function useGame(): GameProp {
             handleMatchFail(character);
         }
     };
+
+    const handleGame = useCallback((character: Character, index: number) => {
+        if (isBlocked) return;
+        if (character.uniqueId === selectedCards?.uniqueId) return;
+        if (selectedCards === null) setSelectedCards(character);
+        if (selectedCards !== null) {
+            const isMatch = compareCards(selectedCards, character);
+            handleMatch(isMatch, character);
+        }
+        handleCardClick(index);
+    }, [isBlocked, selectedCards, compareCards, handleMatch, handleCardClick]);
 
     const handleMatchSuccess = () => {
         if (selectedCards === null) return;

@@ -1,7 +1,7 @@
 export default function ContainerLayout({children}: {children: React.ReactNode}){
     return(
-        <div className="h-full w-full bg-primary">
+        <main className="h-full w-full bg-primary">
             {children}
-        </div>
+        </main>
     )
 }

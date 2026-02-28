@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import type { Character, CharactersResponse } from "../../../shared/types/apiInterface";
 import { GetData } from "../../../shared/services/Api.services";
 import { getUUID } from "../../../shared/services/UUID";
@@ -18,27 +18,27 @@ export default function useCharacters() {
         getCharacters();
     }, [])
 
-    const shuffle = <T,>(arr: T[]): T[] => {
+    const shuffle = useCallback(<T,>(arr: T[]): T[] => {
         const a = [...arr];
         for (let i = a.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [a[i], a[j]] = [a[j], a[i]];
         }
         return a;
-    };
+    }, []);
 
-    const getSixCards = (cards: Character[]) => shuffle(cards).slice(0, 6);
+    const getSixCards = useCallback((cards: Character[]) =>
+        shuffle(cards).slice(0, 6), [shuffle]);
 
-    const buildPairs = (cards: Character[]) => {
+    const buildPairs = useCallback((cards: Character[]) => {
         const duplicated = cards.flatMap(card => [
             { ...card, state: true, uniqueId: getUUID(), delete: false },
             { ...card, state: true, uniqueId: getUUID(), delete: false },
         ]);
-
         return shuffle(duplicated);
-    };
+    }, [shuffle]);
 
-    const handleCardClick = (index: number) => {
+    const handleCardClick = useCallback((index: number) => {
         setCharacters(prev => {
             const newCharacters = [...prev];
             newCharacters[index] = {
@@ -47,18 +47,14 @@ export default function useCharacters() {
             };
             return newCharacters;
         });
-    };
+    }, []);
 
-    const changeStateCharacters = () => {
-        setCharacters(prev => {
-            const newCharacters = [...prev].map((e) => ({ ...e, state: !e.state }));
-            return newCharacters;
-        });
-    }
+    const changeStateCharacters = useCallback(() => {
+        setCharacters(prev => prev.map(e => ({ ...e, state: !e.state })));
+    }, []);
 
-    const toggleCharactersById = (charactersArray: Character[]) => {
+    const toggleCharactersById = useCallback((charactersArray: Character[]) => {
         if (!charactersArray.length) return;
-
         const idsToToggle = new Set(charactersArray.map(c => c.uniqueId));
         setCharacters(prev =>
             prev.map(char =>
@@ -67,17 +63,15 @@ export default function useCharacters() {
                     : char
             )
         );
-    };
+    }, []);
 
+    const deletCharactersForIndex = useCallback((id: number) => {
+        setCharacters(prev => prev.map(e =>
+            e?.id === id ? { ...e, delete: true } : e
+        ) as Character[]);
+    }, []);
 
-    const deletCharactersForIndex = (id: number) => {
-        setCharacters(prev => prev.map((e) => {
-            if (e?.id === id) return { ...e, delete: true };
-            return e;
-        }) as Character[]);
-    }
-
-    const initShuffle = () => {
+    const initShuffle = useCallback(() => {
         const sixCards = getSixCards(cards);
         const pairs = buildPairs(sixCards);
         setCharacters(pairs);
@@ -85,7 +79,7 @@ export default function useCharacters() {
             changeStateCharacters();
         }, 3000);
         return () => clearTimeout(timer);
-    }
+    }, [cards, getSixCards, buildPairs, changeStateCharacters]);
 
 
     return {
