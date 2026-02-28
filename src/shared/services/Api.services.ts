@@ -9,7 +9,10 @@ const api_url = {
 const interceptor = () => {
     axios.interceptors.request.use((config) => {
         config.headers.set('Content-Type', 'application/json');
-        config.headers.set('Access-Control-Allow-Origin', '*');
+        const token = sessionStorage.getItem('token');
+        if (token) {
+            config.headers.set('Authorization', `Bearer ${token}`);
+        }
         return config;
     });
 }
