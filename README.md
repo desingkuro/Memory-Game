@@ -72,7 +72,8 @@ Tomando como base el diseño del Figma proporcionado, se incorporaron las siguie
 ├── package.json
 ├── package-lock.json
 ├── public
-│   └── vite.svg
+│   |── space-icon.svg
+│   └── robots.txt
 ├── README.md
 ├── src
 │   ├── app
@@ -160,7 +161,7 @@ Tomando como base el diseño del Figma proporcionado, se incorporaron las siguie
 | Capa | Tecnología | Plataforma |
 |---|---|---|
 | Frontend | React + Vite | Netlify |
-| Backend | Express.js | Railway |
+| Backend | Express.js | Vercel |
 | Base de datos | PostgreSQL | Supabase |
 
 ---
