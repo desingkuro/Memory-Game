@@ -16,7 +16,7 @@ export default function useCharacters() {
             setCharacters(pairs);
         }
         getCharacters();
-    }, [])
+    }, []);
 
     const shuffle = useCallback(<T,>(arr: T[]): T[] => {
         const a = [...arr];

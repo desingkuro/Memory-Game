@@ -1,6 +1,8 @@
 import { MdCelebration, MdReplay } from "react-icons/md";
 import Button from "../../../shared/components/button";
 import '../styles/GameWinSection.css';
+import useConfetti from "../../../shared/hooks/useConfetti";
+import { useEffect } from "react";
 
 interface GameWinSectionProps {
     visible: boolean;
@@ -15,6 +17,11 @@ export default function GameWinSection({
     onRestart,
     onHome,
 }: GameWinSectionProps) {
+    const { launchConfetti } = useConfetti();
+
+    useEffect(() => {
+        launchConfetti();
+    }, []);
 
     const handleRestart = () => {
         setTimeout(onRestart, 300);
