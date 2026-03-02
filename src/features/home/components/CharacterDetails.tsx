@@ -8,7 +8,7 @@ export default function CharacterDetails({ character }: CharacterDetailsProps) {
     if (!character) return null;
     return (
         <section className="w-full max-w-[520px] h-[550px] flex flex-col items-center justify-center gap-4">
-            <picture className="w-full max-w-[260px] aspect-square overflow-hidden rounded-2xl bg-white">
+            <picture className="w-full max-w-[260px] h-[260px] aspect-square overflow-hidden rounded-2xl bg-white">
                 <img
                     fetchPriority="high"
                     src={character?.image || ""}
@@ -22,7 +22,7 @@ export default function CharacterDetails({ character }: CharacterDetailsProps) {
                     {character.name}
                 </h2>
 
-                <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <div className="w-full grid grid-cols-2 gap-2">
                     <div className="bg-white/70 rounded-xl !p-3">
                         <p className="text-xs text-black/60">Estado</p>
                         <p className="text-sm font-semibold text-black">{character.status}</p>

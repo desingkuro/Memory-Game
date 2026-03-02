@@ -70,7 +70,7 @@ export default function Login() {
                                 <span className="text-red-500 w-full text-left">{errors.password.message}</span>
                             )}
                         </Input>
-                        <div className="w-[80%] h-auto flex items-center justify-center !my-4">
+                        <div className="sm:w-[80%] w-full h-auto flex items-center justify-center !my-4">
                             <Button type="submit" variant="primary" tone={500}>Iniciar Sesión</Button>
                         </div>
                         <Link to="/forgot-password" className="text-tertiary text-center text-lg sm:text-2xl">¿Olvidaste tu usuario o contraseña?</Link>

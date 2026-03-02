@@ -27,7 +27,7 @@ export default function Modal({
                     <button
                         type="button"
                         onClick={onCancel}
-                        className="!mx-auto absolute top-4 right-4 block text-4xl font-bold text-[#f03e3e] hover:text-[#f21616] hover:scale-110 transition-all ease-in-out cursor-pointer"
+                        className="!mx-auto absolute top-2 right-2 sm:top-4 sm:right-4 block text-4xl font-bold text-[#f03e3e] hover:text-[#f21616] hover:scale-110 transition-all ease-in-out cursor-pointer"
                     >
                         <IoMdClose />
                     </button>
