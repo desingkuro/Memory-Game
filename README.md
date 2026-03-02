@@ -32,30 +32,41 @@ El desarrollo se centró en construir una arquitectura **modular, escalable y ma
 | **Axios** | Cliente HTTP adoptado por su simplicidad y sus ventajas frente a `fetch()`, como la intercepción de peticiones y respuestas. |
 | **Notistack** | Proporciona retroalimentación visual al usuario mediante notificaciones (toasts), por ejemplo, para indicar si el inicio de sesión fue exitoso o fallido. |
 | **React Icons** | Facilita la integración de íconos gracias a su amplia variedad y su sencilla implementación en cualquier proyecto. |
+| **Supabase** | Servicio BaaS adoptado para centralizar la autenticación, el manejo del token JWT, la base de datos PostgreSQL y el restablecimiento de contraseña, eliminando la necesidad de un backend propio para estas responsabilidades. |
 
 ### Arquitectura interna
 
-**Manejo de estado:**
-Se optó por estados locales con `useState` en lugar de `useReducer`, dado que ambos presentan un rendimiento equivalente en este contexto y los estados locales no generaban inconvenientes de legibilidad dentro de los hooks. Asimismo, se descartó el uso de un `useContext` global para el estado general, ya que la mayor parte de la información se encontraba centralizada y podía transmitirse directamente de padre a hijo sin necesidad de intermediarios.
+**Manejo de estado — `useState` vs `useReducer`:**
+Se optó por estados locales con `useState` en lugar de `useReducer` en todos los hooks del proyecto. Ambos hooks presentan un rendimiento equivalente para el volumen de estados manejados en esta aplicación y, dado que cada estado mantiene una responsabilidad individual y clara, su lectura dentro de los hooks resulta igualmente legible sin necesidad de consolidarlos en un reducer. Escalar a `useReducer` habría añadido complejidad estructural sin un beneficio concreto.
 
-**Manejo del token JWT:**
-Se evaluó el manejo del token exclusivamente desde el backend mediante cookies; sin embargo, esta opción fue descartada porque el aplicativo no requería una capa de seguridad tan rigurosa. Como alternativa más adecuada al alcance del proyecto, se optó por `sessionStorage` para su gestión en el cliente. Para la persistencia de datos del usuario se utilizó una base de datos relacional **PostgreSQL** a través de **Supabase**, conectada a un backend en **Express.js** desplegado en **Railway**.
+**Ausencia de estado global — sin `useContext` para la lógica del juego:**
+Se descartó deliberadamente el uso de un contexto global (como `useContext` + `useReducer`) para manejar el estado de la lógica del juego. La información fluye correctamente de padre a hijo a través de los hooks `useGame.tsx` → `useCharacters.tsx` y `useCountDown.tsx`, sin necesidad de atravesar múltiples niveles de componentes. Introducir un contexto global para este caso habría sido una abstracción innecesaria que añadiría overhead sin resolver ningún problema real de prop drilling.
 
-**Lógica del juego:**
-El componente principal del juego implementa el hook `useGame.tsx`, que centraliza la lógica del juego y a su vez integra dos hooks complementarios:
-- `useCharacters.tsx`: gestiona todas las operaciones relacionadas con los personajes (peticiones, estados, cálculos, etc.).
-- `useCountDown.tsx`: maneja el contador de la cuenta regresiva mostrada en el toast antes de que las cartas sean barajadas y volteadas.
 
-Ambos hooks son funcionalmente independientes entre sí.
+El **único `useContext` implementado** es `AuthContext.tsx`, cuyo propósito es exponer el estado de la sesión del usuario a lo largo de toda la aplicación para que el componente `Guard.tsx` pueda proteger las rutas privadas de manera centralizada.
+
+
+**Optimización de funciones — `useCallback` sobre `useMemo`:**
+Las funciones expuestas por los hooks `useCharacters.tsx` y `useGame.tsx` (como `handleGame`, `handleCardClick`, `initShuffle`, `toggleCharactersById`, entre otras) fueron envueltas con `useCallback`. Esta decisión se tomó porque dichas funciones se propagan como props hasta el componente `Card.tsx`, que se renderiza **12 veces** simultáneamente (6 pares de cartas). Sin `useCallback`, cada render del hook padre generaría nuevas referencias de función, provocando re-renders innecesarios en todas las instancias de `Card.tsx`. Se descartó `useMemo` porque no existen cálculos computacionalmente costosos en el ciclo de render; las operaciones como `getSixCards` y `buildPairs` se ejecutan únicamente en eventos puntuales (inicio o reinicio del juego), no en cada render.
+
+
+**Manejo de autenticación y token JWT — Supabase Auth:**
+Toda la capa de autenticación fue delegada al servicio **Supabase Auth**, lo que incluye el login con email y contraseña, la generación del token JWT, el manejo automático del refresh token y el flujo de restablecimiento de contraseña mediante correo electrónico. Supabase persiste la sesión internamente y renueva el access token de forma transparente antes de su expiración, sin que el frontend deba intervenir en ningún momento en este proceso. Esto elimina completamente la necesidad de gestionar el token de manera manual en el cliente (como se haría con `sessionStorage` o `localStorage` directamente) y garantiza que las credenciales estén siempre protegidas por la infraestructura del servicio.
+
 
 **Protección de rutas:**
-Para verificar la identidad del usuario se creó un componente guard que envuelve las rutas protegidas. Este componente implementa el hook `useAuth.tsx` junto con `AuthContext.tsx`, los cuales verifican si el usuario tiene una sesión activa antes de permitir el acceso a la vista solicitada.
+Para verificar la identidad del usuario se implementó el componente `Guard.tsx`, que envuelve las rutas protegidas y consume el `AuthContext.tsx` a través del hook `useAuth.tsx`. Este mecanismo verifica si existe una sesión activa de Supabase antes de permitir el acceso, redirigiendo automáticamente al login en caso contrario.
+
+**Lógica del juego:**
+El hook `useGame.tsx` centraliza toda la lógica del juego e integra internamente dos hooks complementarios e independientes entre sí:
+- `useCharacters.tsx`: gestiona las operaciones relacionadas con los personajes (petición a la API, estados de las cartas, barajado, emparejamiento y eliminación).
+- `useCountDown.tsx`: maneja la cuenta regresiva mostrada en el toast antes de que las cartas sean volteadas al iniciar la partida.
 
 **Experiencia de usuario (UX):**
-Tomando como base el diseño del Figma proporcionado, se incorporaron las siguientes mejoras para hacer la experiencia más amena y fluida:
+Tomando como base el diseño del Figma proporcionado, se incorporaron las siguientes mejoras:
 
-- **Modal explicativo** en la pantalla principal que describe las reglas del juego antes de comenzar.
-- **Toast con cuenta regresiva** en la esquina superior derecha que indica el tiempo disponible para memorizar las cartas antes de que sean volteadas.
+- **Modal explicativo** en la pantalla principal con las reglas del juego antes de comenzar.
+- **Toast con cuenta regresiva** en la esquina superior derecha que indica el tiempo disponible para memorizar las cartas.
 - **Animaciones** sutiles que enriquecen la interacción sin comprometer el rendimiento.
 - **Pantalla de resultados** rediseñada visualmente para las felicitaciones al finalizar el juego.
 - **Componente `Loader.tsx`** para suavizar las transiciones entre vistas y procesos, evitando cambios bruscos.
@@ -72,8 +83,8 @@ Tomando como base el diseño del Figma proporcionado, se incorporaron las siguie
 ├── package.json
 ├── package-lock.json
 ├── public
-│   |── space-icon.svg
-│   └── robots.txt
+│   ├── robots.txt
+│   └── space-icon.svg
 ├── README.md
 ├── src
 │   ├── app
@@ -84,24 +95,27 @@ Tomando como base el diseño del Figma proporcionado, se incorporaron las siguie
 │   │   │   └── MainLayout.tsx
 │   │   └── router
 │   │       └── Router.tsx
-│   ├── App.css
 │   ├── App.tsx
 │   ├── assets
-│   │   ├── img
-│   │   │   ├── backCard.png
-│   │   │   └── logo.webp
-│   │   └── react.svg
+│   │   └── img
+│   │       ├── backCard.png
+│   │       └── logo.webp
 │   ├── features
 │   │   ├── auth
-│   │   │   ├── components
-│   │   │   │   ├── Input.tsx
-│   │   │   │   └── PasswordToggle.tsx
-│   │   │   ├── hooks
-│   │   │   │   └── useLogin.tsx
-│   │   │   └── Login.tsx
+│   │   │   ├── forgotPassword
+│   │   │   │   ├── ForgotPassword.tsx
+│   │   │   │   └── hook
+│   │   │   │       └── useForgotPassword.tsx
+│   │   │   └── login
+│   │   │       ├── components
+│   │   │       │   ├── hooks
+│   │   │       │   │   └── useLogin.tsx
+│   │   │       │   └── PasswordToggle.tsx
+│   │   │       └── Login.tsx
 │   │   └── home
 │   │       ├── components
 │   │       │   ├── Card.tsx
+│   │       │   ├── CharacterDetails.tsx
 │   │       │   ├── FooterHome.tsx
 │   │       │   ├── GameWinSection.tsx
 │   │       │   ├── HeaderHome.tsx
@@ -125,15 +139,19 @@ Tomando como base el diseño del Figma proporcionado, se incorporaron las siguie
 │       │   ├── ContainerLayout.tsx
 │       │   ├── Footer.tsx
 │       │   ├── Header.tsx
+│       │   ├── Input.tsx
 │       │   ├── Loader.tsx
+│       │   ├── Modal.tsx
 │       │   └── Toast.tsx
 │       ├── context
 │       │   └── AuthContext.tsx
 │       ├── hooks
-│       │   └── useAuth.tsx
+│       │   ├── useAuth.tsx
+│       │   └── useConfetti.tsx
 │       ├── services
 │       │   ├── AlertServices.tsx
 │       │   ├── Api.services.ts
+│       │   ├── Supabase.client.ts
 │       │   └── UUID.ts
 │       ├── styles
 │       │   └── Loader.css
@@ -145,8 +163,6 @@ Tomando como base el diseño del Figma proporcionado, se incorporaron las siguie
 ├── tsconfig.json
 ├── tsconfig.node.json
 └── vite.config.ts
-
-25 directories, 54 files
 ```
 
 ---
@@ -161,7 +177,7 @@ Tomando como base el diseño del Figma proporcionado, se incorporaron las siguie
 | Capa | Tecnología | Plataforma |
 |---|---|---|
 | Frontend | React + Vite | Netlify |
-| Backend | Express.js | Vercel |
+| Auth + Backend | Supabase Auth | Supabase |
 | Base de datos | PostgreSQL | Supabase |
 
 ---
@@ -198,4 +214,3 @@ npm run build
 ```
 
 Esto genera la versión optimizada del proyecto en la carpeta `dist/`.
-# Memory-Game-Rick-and-Morty-Private

@@ -7,7 +7,7 @@ interface CharacterDetailsProps {
 export default function CharacterDetails({ character }: CharacterDetailsProps) {
     if (!character) return null;
     return (
-        <section className="w-full max-w-[520px] flex flex-col items-center justify-center gap-4">
+        <section className="w-full max-w-[520px] h-[550px] flex flex-col items-center justify-center gap-4">
             <picture className="w-full max-w-[260px] aspect-square overflow-hidden rounded-2xl bg-white">
                 <img
                     fetchPriority="high"
@@ -56,7 +56,7 @@ export default function CharacterDetails({ character }: CharacterDetailsProps) {
 
                 <div className="w-full bg-white/70 rounded-xl !p-3">
                     <p className="text-xs text-black/60">Episodios</p>
-                    <p className="text-sm font-semibold text-black">
+                    <p className="text-xl font-semibold text-black">
                         {Array.isArray(character.episode) ? character.episode.length : 0}
                     </p>
                 </div>

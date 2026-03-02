@@ -70,6 +70,14 @@ export default function useGame(): GameProp {
         setSelectedCards(character);
     }
 
+    const closeModalDetails = () => {
+        setViewModal(prev => ({
+            ...prev,
+            detailsModal: false
+        }));
+        setSelectedCards(null);
+    }
+
     const compareCards = useCallback((c1: Character, c2: Character): boolean => {
         return c1.id === c2.id;
     }, []);
@@ -138,5 +146,6 @@ export default function useGame(): GameProp {
         setIsBlocked,
         handleViewDetails,
         selectedCards,
+        closeModalDetails
     }
 }

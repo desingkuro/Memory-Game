@@ -19,7 +19,7 @@ export default function Login() {
     } = useLogin();
     return (
         <ContainerLayout>
-            <div className="h-dvh w-full flex items-center justify-center bg-primary !p-4">
+            <div className="h-dvh w-full flex items-center justify-center bg-primary !p-4 animate-slideIn-long">
                 <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-[612px] h-[95%] max-h-[657px] bg-secondary rounded-xl flex flex-col items-center justify-center gap-4 overflow-hidden !m-4 sm:!m-8 !p-6 sm:!p-8">
                     <picture className="h-[25%] w-full flex items-center justify-center">
                         <img fetchPriority="high" src={logotipo} alt="Logotipo" className="object-contain w-[100%] h-[100%]" />

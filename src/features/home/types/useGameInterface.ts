@@ -16,7 +16,8 @@ export interface GameProp {
     isBlocked:boolean,
     setIsBlocked:(isBlocked:boolean)=>void,
     handleViewDetails:(character:Character)=>void,
-    selectedCards:Character | null
+    selectedCards:Character | null,
+    closeModalDetails:()=>void
 }
 
 export interface GameModals{

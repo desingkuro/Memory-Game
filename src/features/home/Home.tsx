@@ -25,6 +25,7 @@ export default function Home() {
         resetGame,
         handleViewDetails,
         selectedCards,
+        closeModalDetails,
         turns } = useGame();
 
     const handleCardClick = (character: Character, index: number) => {
@@ -38,7 +39,7 @@ export default function Home() {
                 <HeaderHome state={state} successes={successes} turns={turns} />
                 <main
                     className={
-                        "w-full min-w-[300px] xl:min-w-[1024px] home-main-scroll grid gap-2 sm:gap-4 " +
+                        "w-full min-w-[300px] xl:min-w-[1024px] home-main-scroll grid gap-2 sm:gap-4 animate-slideIn-long " +
                         (state === "win"
                             ? "grid-cols-1 place-items-center min-h-[380px]"
                             : "grid grid-cols-4 grid-rows-2 justify-items-center")
@@ -83,7 +84,7 @@ export default function Home() {
                 {/* Modal de detalles */}
                 <Modal
                     open={viewModal.detailsModal}
-                    onCancel={() => setViewModal({ welcomeModal: false, detailsModal: false })}
+                    onCancel={closeModalDetails}
                 >
                     <CharacterDetails
                         character={selectedCards!}
