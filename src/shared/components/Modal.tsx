@@ -1,3 +1,5 @@
+import { IoMdClose } from "react-icons/io";
+
 interface ModalProps {
     open: boolean;
     onCancel?: () => void;
@@ -15,7 +17,7 @@ export default function Modal({
         <div className="fixed inset-0 z-50 h-full w-full flex items-center justify-center bg-black/40 animate-scaleIn">
 
             {/* Contenedor del modal */}
-            <div className=" xl:max-w-md w-[340px] sm:w-[440px] rounded-2xl bg-[#FFFDF5] !px-10 !py-8 shadow-2xl animate-scaleIn">
+            <div className=" xl:max-w-md w-[340px] sm:w-[440px] relative rounded-2xl bg-[#FFFDF5] !px-10 !py-8 shadow-2xl animate-scaleIn">
 
                 {/* Contenido del modal */}
                 {children}
@@ -25,9 +27,9 @@ export default function Modal({
                     <button
                         type="button"
                         onClick={onCancel}
-                        className="!mx-auto block text-sm font-medium text-[#777] hover:text-[#444]"
+                        className="!mx-auto absolute top-4 right-4 block text-4xl font-bold text-[#f03e3e] hover:text-[#f21616] hover:scale-110 transition-all ease-in-out cursor-pointer"
                     >
-                        Cancelar
+                        <IoMdClose />
                     </button>
                 )}
             </div>

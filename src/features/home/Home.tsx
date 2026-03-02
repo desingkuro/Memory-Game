@@ -63,8 +63,7 @@ export default function Home() {
                     )}
                 </main>
 
-
-
+                {/* Toast */}
                 {isRunning && <Toast
                     count={seconds}
                     visible={isRunning}
@@ -72,6 +71,7 @@ export default function Home() {
                     message="Segundos"
                 />}
 
+                {/* Modal de bienvenida */}
                 <Modal
                     open={viewModal.welcomeModal}
                 >
@@ -80,6 +80,7 @@ export default function Home() {
                     />
                 </Modal>
 
+                {/* Modal de detalles */}
                 <Modal
                     open={viewModal.detailsModal}
                     onCancel={() => setViewModal({ welcomeModal: false, detailsModal: false })}
@@ -89,6 +90,7 @@ export default function Home() {
                     />
                 </Modal>
 
+                {/* Footer */}
                 {state === "characters" && <FooterHome onClick={handlePlay} stateGame={state} />}
             </section>
         </div>
