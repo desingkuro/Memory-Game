@@ -15,14 +15,14 @@ export default function ForgotPassword() {
     return (
         <ContainerLayout>
             <div className="h-dvh w-full flex items-center justify-center bg-primary !p-4 animate-slideIn-long">
-                <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-[612px] h-[95%] max-h-[420px] bg-secondary rounded-xl flex flex-col items-center justify-center gap-4 overflow-hidden !m-4 sm:!m-8 !p-6 sm:!p-8">
+                <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-[612px] h-[500px] sm:h-[420px] bg-secondary rounded-xl flex flex-col items-center justify-center gap-4 overflow-hidden !m-4 sm:!m-8 !p-6 sm:!p-8">
                     <picture className="h-[25%] w-full flex items-center justify-center">
                         <img fetchPriority="high" src={logotipo} alt="Logotipo" className="object-contain w-[100%] h-[100%]" />
                     </picture>
                     <h2 className="text-xl font-bold">Recuperar contraseña</h2>
 
                     <main className="w-full h-[70%] flex flex-col items-center  gap-6">
-                        <p className="text-sm text-gray-400 w-[80%]">
+                        <p className="text-sm text-gray-400 w-full sm:w-[80%]">
                             Ingresa tu correo y te enviaremos un enlace para recuperar tu acceso.
                         </p>
 
@@ -42,8 +42,8 @@ export default function ForgotPassword() {
                                 <span className="text-red-500 w-full text-left">{errors.email.message}</span>
                             )}
                         </Input>
-                        <div className="w-[80%]">
-                            <Button className="w-full" type="submit">Enviar correo de recuperación</Button>
+                        <div className="w-full sm:w-[80%]">
+                            <Button className="w-full text-sm sm:text-xl" type="submit">Enviar correo de recuperación</Button>
                         </div>
                     </main>
 
