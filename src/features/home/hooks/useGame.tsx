@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import type { GameProp, stateGame } from "../types/useGameInterface";
+import type { GameModals, GameProp, stateGame } from "../types/useGameInterface";
 import useCharacters from "./useCharacters";
 import type { Character } from "../../../shared/types/apiInterface";
 import { useCountdown } from "./useCountDown";
@@ -20,13 +20,15 @@ export default function useGame(): GameProp {
     const [turns, setTurns] = useState<number>(0);
     const [state, setState] = useState<stateGame>("characters");
     const [selectedCards, setSelectedCards] = useState<Character | null>(null);
-    const [viewModal, setViewModal] = useState<boolean>(true);
+    const [viewModal, setViewModal] = useState<GameModals>({
+        welcomeModal: true,
+        detailsModal: false
+    });
     const [lengthCharacters, setLengthCharacters] = useState<number>(0);
     const [isBlocked, setIsBlocked] = useState<boolean>(false);
 
     const handleState = (state: stateGame) => {
         setState(state);
-
     }
 
     const incrementTurns = () => {
@@ -52,9 +54,20 @@ export default function useGame(): GameProp {
         setTurns(0);
         setState("characters");
         setSelectedCards(null);
-        setViewModal(true);
+        setViewModal({
+            welcomeModal: true,
+            detailsModal: false
+        });
         initShuffle();
         changeStateCharacters();
+    }
+
+    const handleViewDetails = (character:Character) => {
+        setViewModal(prev => ({
+            ...prev,
+            detailsModal: true
+        }));
+        setSelectedCards(character);
     }
 
     const compareCards = useCallback((c1: Character, c2: Character): boolean => {
@@ -108,8 +121,6 @@ export default function useGame(): GameProp {
         }, 1000);
     };
 
-
-
     return {
         successes,
         turns,
@@ -124,6 +135,8 @@ export default function useGame(): GameProp {
         seconds,
         isRunning,
         isBlocked,
-        setIsBlocked
+        setIsBlocked,
+        handleViewDetails,
+        selectedCards,
     }
 }

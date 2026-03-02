@@ -7,6 +7,8 @@ import RickAndMortyModal from "./components/RickAndMortyModal";
 import Toast from "../../shared/components/Toast";
 import GameWinSection from "./components/GameWinSection";
 import './styles/Home.css';
+import Modal from "../../shared/components/Modal";
+import CharacterDetails from "./components/CharacterDetails";
 
 export default function Home() {
 
@@ -21,10 +23,13 @@ export default function Home() {
         isRunning,
         successes,
         resetGame,
+        handleViewDetails,
+        selectedCards,
         turns } = useGame();
 
     const handleCardClick = (character: Character, index: number) => {
-        state === "game" && handleGame(character, index)
+        state === "game" && handleGame(character, index);
+        state === "characters" && handleViewDetails(character);
     }
 
     return (
@@ -67,11 +72,23 @@ export default function Home() {
                     message="Segundos"
                 />}
 
+                <Modal
+                    open={viewModal.welcomeModal}
+                >
+                    <RickAndMortyModal
+                        onContinue={() => setViewModal({ welcomeModal: false, detailsModal: false })}
+                    />
+                </Modal>
 
-                <RickAndMortyModal
-                    open={viewModal}
-                    onContinue={() => setViewModal(false)}
-                />
+                <Modal
+                    open={viewModal.detailsModal}
+                    onCancel={() => setViewModal({ welcomeModal: false, detailsModal: false })}
+                >
+                    <CharacterDetails
+                        character={selectedCards!}
+                    />
+                </Modal>
+
                 {state === "characters" && <FooterHome onClick={handlePlay} stateGame={state} />}
             </section>
         </div>
