@@ -1,7 +1,8 @@
 import { createBrowserRouter } from "react-router"
 import MainLayout from "../layouts/MainLayout"
 import ProtectedRoute from "../guard/Guard"
-import React from "react"
+import React, { Suspense } from "react"
+import Loader from "../../shared/components/Loader"
 
 /**
  * Lazy loading components
@@ -13,7 +14,11 @@ const ForgotPasswordLazy = React.lazy(() => import("../../features/auth/forgotPa
 export const router = createBrowserRouter([
     {
         path: "/",
-        element: <MainLayout />,
+        element: (
+            <Suspense fallback={<Loader />}>
+                <MainLayout />
+            </Suspense>
+        ),
         children: [
             {
                 path: "/",
@@ -23,10 +28,18 @@ export const router = createBrowserRouter([
     },
     {
         path: "/login",
-        element: <LoginLazy />,
+        element: (
+            <Suspense fallback={<Loader />}>
+                <LoginLazy />
+            </Suspense>
+        ),
     },
     {
         path: "/forgot-password",
-        element: <ForgotPasswordLazy />,
+        element: (
+            <Suspense fallback={<Loader />}>
+                <ForgotPasswordLazy />
+            </Suspense>
+        ),
     }
 ])
