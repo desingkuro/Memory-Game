@@ -1,10 +1,11 @@
-import logotipo from "../../assets/img/logo.webp"
-import Button from "../../shared/components/button"
-import ContainerLayout from "../../shared/components/ContainerLayout"
-import Input from "./components/Input"
-import useLogin from "./hooks/useLogin"
+import logotipo from "../../../assets/img/logo.webp"
+import Button from "../../../shared/components/button"
+import ContainerLayout from "../../../shared/components/ContainerLayout"
+import Input from "../../../shared/components/Input" 
+import useLogin from "./components/hooks/useLogin" 
 import PasswordToggle from "./components/PasswordToggle"
-import Loader from "../../shared/components/Loader"
+import Loader from "../../../shared/components/Loader"
+import { Link } from "react-router"
 
 export default function Login() {
     const {
@@ -61,7 +62,7 @@ export default function Login() {
                         <div className="w-[80%] h-auto flex items-center justify-center !my-4">
                             <Button type="submit" variant="primary" tone={500}>Iniciar Sesión</Button>
                         </div>
-                        <a href="#" className="text-tertiary text-2xl">¿Olvidaste tu usuario o contraseña?</a>
+                        <Link to="/forgot-password" className="text-tertiary text-2xl">¿Olvidaste tu usuario o contraseña?</Link>
                     </div>
                 </form>
             </div >

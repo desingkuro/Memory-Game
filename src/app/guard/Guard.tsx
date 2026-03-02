@@ -9,11 +9,11 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
-  const { user, loading } = useAuth();
+  const { isAuthenticated, isLoading } = useAuth();
 
-  if (loading) return <Loader/>;
+  if (isLoading) return <Loader/>;
 
-  return user ? children : <Navigate to="/login" />;
+  return isAuthenticated ? children : <Navigate to="/login" />;
 };
 
 export default ProtectedRoute;

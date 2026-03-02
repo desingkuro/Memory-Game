@@ -1,6 +1,8 @@
 import { createContext, useEffect, useState } from "react";
 import { Alert } from "../services/AlertServices";
 import { useSnackbar } from "notistack";
+import { supabase } from "../services/Supabase.client";
+import { logoutUser } from "../services/Api.services";
 
 
 export interface AuthContextType {
@@ -26,29 +28,48 @@ export const AuthContext = createContext<AuthContextType>({
 export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
     const [user, setUser] = useState<any>(null);
     const [loading, setLoading] = useState<boolean>(true);
-    const {enqueueSnackbar} = useSnackbar();
+    const { enqueueSnackbar } = useSnackbar();
 
-    const logout = () => {
-        sessionStorage.removeItem('token');
-        sessionStorage.removeItem('user');
-        setUser(null);
+    const logout = async () => {
+        setLoading(true);
+        const result = await logoutUser();
+        setLoading(false);
+        if (result) {
+            setUser(null);
+            Alert({
+                text: "Sesión cerrada",
+                type: "success"
+            }, enqueueSnackbar);
+        } else {
+            Alert({
+                text: "Error al cerrar sesión",
+                type: "error"
+            }, enqueueSnackbar);
+        }
     };
 
     useEffect(() => {
-        const storedUser = sessionStorage.getItem('user');
-        const token = sessionStorage.getItem('token');
-
-        if (storedUser && token) {
-            setUser(JSON.parse(storedUser));
-        }else{
-            Alert({
-                text: "No se encontró el usuario",
-                type: "error"
-            },enqueueSnackbar);
-        }
-        setTimeout(() => {
+        supabase.auth.getSession().then(({ data: { session } }) => {
+            setUser(session);
             setLoading(false);
-        }, 1000);
+            Alert({
+                text: "Sesión iniciada",
+                type: "success"
+            }, enqueueSnackbar);
+        });
+
+        const { data: { subscription } } = supabase.auth.onAuthStateChange(
+            (_event, session) => {
+                setUser(session);
+                setLoading(false);
+                Alert({
+                    text: "Sesión iniciada",
+                    type: "success"
+                }, enqueueSnackbar);
+            }
+        );
+
+        return () => subscription.unsubscribe();
     }, []);
 
     return (

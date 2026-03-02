@@ -1,5 +1,6 @@
 import axios from "axios";
 import type { GetArguments, PostArguments } from "../types/apiInterface";
+import { supabase } from './Supabase.client';
 
 const api_url = {
     auth: import.meta.env.VITE_API_URL_GAME || "http://localhost:3000",
@@ -37,3 +38,33 @@ export async function PostData({path,type,data}:PostArguments): Promise<any> {
         throw error;
     }
 }
+
+
+export const loginUser = async (email: string, password: string) => {
+    const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+    });
+
+    if (error) throw error;
+    return data;
+};
+
+export const logoutUser = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) throw error;
+    return true;
+};
+
+export const getCurrentUser = async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    return session;
+};
+
+export const resetPassword = async (email: string) => {
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: 'https://memorygamerickandmorty.netlify.app/', 
+    });
+    if (error) throw error;
+};
+

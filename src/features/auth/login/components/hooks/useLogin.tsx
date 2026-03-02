@@ -1,10 +1,9 @@
 import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
-import { PostData } from "../../../shared/services/Api.services";
+import { loginUser } from "../../../../../shared/services/Api.services";
 import { useSnackbar } from "notistack";
-import { Alert } from "../../../shared/services/AlertServices";
-import { AuthContext } from "../../../shared/context/AuthContext";
+import { Alert } from "../../../../../shared/services/AlertServices";
 
 interface LoginFormInputs {
     email: string;
@@ -17,11 +16,10 @@ export default function useLogin() {
     const { enqueueSnackbar } = useSnackbar();
     const navigate = useNavigate();
     const [showLoader, setShowLoader] = useState<boolean>(false);
-    const { setUser } = useContext(AuthContext);
 
     const onSubmit = async (data: LoginFormInputs) => {
         setShowLoader(true);
-        await signIn(data.email, data.password, enqueueSnackbar);
+        await signIn(data.email, data.password);
         setShowLoader(false);
     };
 
@@ -29,26 +27,13 @@ export default function useLogin() {
         setShowPassword(!showPassword);
     };
 
-    async function signIn(
-        email: string,
-        password: string,
-        enqueueSnackbar: any
-    ) {
+    const signIn = async (email: string, password: string) => {
         try {
-            const data = {
-                user: email,
-                password: password
-            }
-            const response = await PostData({ path: 'auth/login', type: 'auth', data });
-            if (response.status === 'success') {
-                sessionStorage.setItem('token', response.token);
-                sessionStorage.setItem('user', JSON.stringify(response.user));
-                setUser(response.user);
+            const response = await loginUser(email, password);
+
+            if (response.user) {
                 Alert(
-                    {
-                        text: "Sesión iniciada correctamente",
-                        type: "success",
-                    },
+                    { text: "Sesión iniciada correctamente", type: "success" },
                     enqueueSnackbar
                 );
                 navigate('/');
@@ -56,14 +41,14 @@ export default function useLogin() {
         } catch (error: any) {
             Alert(
                 {
-                    text: "Error al iniciar sesión, verifique el usuario o contraseña",
+                    text: error.message || "Error al iniciar sesión, verifique el usuario o contraseña",
                     type: "error",
                 },
                 enqueueSnackbar
             );
-            console.error("Error signing in:", error.code, error.message);
         }
-    }
+    };
+
 
 
     return {

@@ -7,7 +7,8 @@ import React from "react"
  * Lazy loading components
  */
 const HomeLazy = React.lazy(() => import("../../features/home/Home"));
-const LoginLazy = React.lazy(() => import("../../features/auth/Login"));
+const LoginLazy = React.lazy(() => import("../../features/auth/login/Login"));
+const ForgotPasswordLazy = React.lazy(() => import("../../features/auth/forgotPassword/ForgotPassword"));
 
 export const router = createBrowserRouter([
     {
@@ -23,5 +24,9 @@ export const router = createBrowserRouter([
     {
         path: "/login",
         element: <LoginLazy />,
+    },
+    {
+        path: "/forgot-password",
+        element: <ForgotPasswordLazy />,
     }
 ])
