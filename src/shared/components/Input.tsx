@@ -1,5 +1,5 @@
 interface InputProps {
-    label: string,
+    label?: string,
     type: string,
     id: string,
     placeholder: string,
@@ -11,7 +11,7 @@ interface InputProps {
 export default function Input({ label, type, id, placeholder, propInput, children }: InputProps) {
     return (
         <div className="w-[80%] h-auto relative flex flex-col justify-center items-center gap-2 !py-2">
-            <label htmlFor={id} className=" text-quinary text-xl text-left w-full font-semibold">{label}</label>
+            {label && <label htmlFor={id} className=" text-quinary text-xl text-left w-full font-semibold">{label}</label>}
             <input
                 type={type}
                 id={id}
