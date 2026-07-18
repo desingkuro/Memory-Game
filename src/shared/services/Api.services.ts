@@ -2,8 +2,8 @@ import axios from "axios";
 import type { GetArguments, PostArguments } from "../types/apiInterface";
 
 const api_url = {
-    auth: import.meta.env.VITE_API_URL_GAME || "http://localhost:3000",
-    game: import.meta.env.VITE_API_URL_CHARACTERS || "http://localhost:3000"
+    auth: import.meta.env.VITE_API_URL_GAME || "https://rickandmortyapi.com/api",
+    game: import.meta.env.VITE_API_URL_CHARACTERS || "https://rickandmortyapi.com/api"
 }
 
 const interceptor = () => {
