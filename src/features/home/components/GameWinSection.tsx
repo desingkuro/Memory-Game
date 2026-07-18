@@ -21,7 +21,7 @@ export default function GameWinSection({
 
     useEffect(() => {
         launchConfetti();
-    }, []);
+    }, [launchConfetti]);
 
     const handleRestart = () => {
         setTimeout(onRestart, 300);

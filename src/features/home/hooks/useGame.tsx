@@ -31,14 +31,6 @@ export default function useGame(): GameProp {
         setState(state);
     }
 
-    const incrementTurns = () => {
-        setTurns(prev => prev + 1);
-    }
-
-    const incrementSuccesses = () => {
-        setSuccesses(prev => prev + 1);
-    }
-
     const handlePlay = () => {
         handleState("game");
         setSuccesses(0);
@@ -82,17 +74,44 @@ export default function useGame(): GameProp {
         return c1.id === c2.id;
     }, []);
 
-    const handleMatch = (isMatch: boolean, character: Character) => {
+    const handleMatchSuccess = useCallback(() => {
+        if (selectedCards === null) return;
+        setIsBlocked(true);
+        setTimeout(() => {
+            deletCharactersForIndex(selectedCards.id);
+            setSuccesses(prev => {
+                const newCount = prev + 1;
+                if (newCount === lengthCharacters / 2) {
+                    setState("win");
+                }
+                return newCount;
+            });
+            setSelectedCards(null);
+            setIsBlocked(false);
+        }, 1000);
+    }, [selectedCards, deletCharactersForIndex, lengthCharacters]);
+
+    const handleMatchFail = useCallback((character: Character) => {
+        if (selectedCards === null) return;
+        setIsBlocked(true);
+        setTimeout(() => {
+            toggleCharactersById([character, selectedCards]);
+            setSelectedCards(null);
+            setIsBlocked(false);
+        }, 1000);
+    }, [selectedCards, toggleCharactersById]);
+
+    const handleMatch = useCallback((isMatch: boolean, character: Character) => {
         if (selectedCards === null || isBlocked) return;
 
-        incrementTurns();
+        setTurns(prev => prev + 1);
 
         if (isMatch) {
             handleMatchSuccess();
         } else {
             handleMatchFail(character);
         }
-    };
+    }, [selectedCards, isBlocked, handleMatchSuccess, handleMatchFail]);
 
     const handleGame = useCallback((character: Character, index: number) => {
         if (isBlocked) return;
@@ -104,30 +123,6 @@ export default function useGame(): GameProp {
         }
         handleCardClick(index);
     }, [isBlocked, selectedCards, compareCards, handleMatch, handleCardClick]);
-
-    const handleMatchSuccess = () => {
-        if (selectedCards === null) return;
-        setIsBlocked(true);
-        setTimeout(() => {
-            deletCharactersForIndex(selectedCards.id);
-            incrementSuccesses();
-            setSelectedCards(null);
-            setIsBlocked(false);
-            if (successes + 1 === lengthCharacters / 2) {
-                setState("win");
-            }
-        }, 1000);
-    };
-
-    const handleMatchFail = (character: Character) => {
-        if (selectedCards === null) return;
-        setIsBlocked(true);
-        setTimeout(() => {
-            toggleCharactersById([character, selectedCards]);
-            setSelectedCards(null);
-            setIsBlocked(false);
-        }, 1000);
-    };
 
     return {
         successes,

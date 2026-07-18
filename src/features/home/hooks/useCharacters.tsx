@@ -7,17 +7,6 @@ export default function useCharacters() {
     const [characters, setCharacters] = useState<Character[]>([]);
     const [cards, setCards] = useState<Character[]>([]);
 
-    useEffect(() => {
-        const getCharacters = async () => {
-            const response: CharactersResponse = await GetData({ path: 'character', type: 'game' });
-            setCards(response.results);
-            const sixCards = getSixCards(response.results);
-            const pairs = buildPairs(sixCards);
-            setCharacters(pairs);
-        }
-        getCharacters();
-    }, []);
-
     const shuffle = useCallback(<T,>(arr: T[]): T[] => {
         const a = [...arr];
         for (let i = a.length - 1; i > 0; i--) {
@@ -37,6 +26,17 @@ export default function useCharacters() {
         ]);
         return shuffle(duplicated);
     }, [shuffle]);
+
+    useEffect(() => {
+        const getCharacters = async () => {
+            const response = await GetData<CharactersResponse>({ path: 'character', type: 'game' });
+            setCards(response.results);
+            const sixCards = getSixCards(response.results);
+            const pairs = buildPairs(sixCards);
+            setCharacters(pairs);
+        }
+        getCharacters();
+    }, [getSixCards, buildPairs]);
 
     const handleCardClick = useCallback((index: number) => {
         setCharacters(prev => {
