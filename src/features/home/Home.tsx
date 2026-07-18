@@ -29,8 +29,8 @@ export default function Home() {
         turns } = useGame();
 
     const handleCardClick = (character: Character, index: number) => {
-        state === "game" && handleGame(character, index);
-        state === "characters" && handleViewDetails(character);
+        if (state === "game") handleGame(character, index);
+        if (state === "characters") handleViewDetails(character);
     }
 
     return (

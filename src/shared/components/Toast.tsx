@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { RxCounterClockwiseClock } from "react-icons/rx";
-import type { animationState, ToastProps } from "../types/toast";
+import type { ToastProps } from "../types/toast";
 
 
 
@@ -17,28 +17,25 @@ export default function Toast({
     position,
     message,
 }: ToastProps) {
-    const [animationState, setAnimationState] = useState<animationState>("idle");
+    const [exiting, setExiting] = useState(false);
 
     useEffect(() => {
-        if (visible) {
-            setAnimationState("entering");
-        } else {
-            setAnimationState("exiting");
-            const timer = setTimeout(() => {
-                setAnimationState("idle");
-            }, 300);
+        if (!visible) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
+            setExiting(true);
+            const timer = setTimeout(() => setExiting(false), 300);
             return () => clearTimeout(timer);
         }
     }, [visible]);
 
-    if (animationState === "idle") return null;
+    if (!visible && !exiting) return null;
 
     return (
         <div
             className={`
         fixed z-50 w-80 rounded-xl bg-white shadow-2xl border border-[#00B5CC]
         overflow-hidden ${positionClasses[position]}
-        ${animationState === "entering"
+        ${visible
                     ? "animate-slideIn"
                     : "animate-slideOut"
                 }
