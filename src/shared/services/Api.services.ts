@@ -19,9 +19,9 @@ const interceptor = () => {
 }
 interceptor();
 
-export async function GetData({path,type}:GetArguments): Promise<any> {
+export async function GetData<T>({path,type}:GetArguments): Promise<T> {
     try {
-        const response = await axios.get(`${api_url[type]}/${path}`);
+        const response = await axios.get<T>(`${api_url[type]}/${path}`);
         return response.data;
     } catch (error) {
         console.error(error);
@@ -29,9 +29,9 @@ export async function GetData({path,type}:GetArguments): Promise<any> {
     }
 }
 
-export async function PostData({path,type,data}:PostArguments): Promise<any> {
+export async function PostData<T>({path,type,data}:PostArguments): Promise<T> {
     try {
-        const response = await axios.post(`${api_url[type]}/${path}`, data);
+        const response = await axios.post<T>(`${api_url[type]}/${path}`, data);
         return response.data;
     } catch (error) {
         console.error(error);

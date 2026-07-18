@@ -24,10 +24,11 @@ export default function useForgotPassword() {
                 },
                 enqueueSnackbar
             );
-        } catch (error: any) {
+        } catch (error) {
+            const message = error instanceof Error ? error.message : "Error al enviar el correo de recuperación";
             Alert(
                 {
-                    text: error.message || "Error al enviar el correo de recuperación",
+                    text: message,
                     type: "error"
                 },
                 enqueueSnackbar

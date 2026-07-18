@@ -1,9 +1,11 @@
+import type { UseFormRegisterReturn } from "react-hook-form";
+
 interface InputProps {
     label?: string,
     type: string,
     id: string,
     placeholder: string,
-    propInput: any,
+    propInput: UseFormRegisterReturn,
     children?: React.ReactNode
 }
 

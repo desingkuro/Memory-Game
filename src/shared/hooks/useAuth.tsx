@@ -1,10 +1,11 @@
 import { useContext } from "react";
+import type { User } from "@supabase/supabase-js";
 import { AuthContext, type AuthContextType } from "../context/AuthContext";
 
 interface InterfaceUseAuth{
     isAuthenticated: boolean;
-    user: any;
-    token: string;
+    user: User | null;
+    token: string | null;
     isLoading: boolean;
     logout: () => void;
 }

@@ -38,10 +38,11 @@ export default function useLogin() {
                 );
                 navigate('/');
             }
-        } catch (error: any) {
+        } catch (error) {
+            const message = error instanceof Error ? error.message : "Error al iniciar sesión, verifique el usuario o contraseña";
             Alert(
                 {
-                    text: error.message || "Error al iniciar sesión, verifique el usuario o contraseña",
+                    text: message,
                     type: "error",
                 },
                 enqueueSnackbar
